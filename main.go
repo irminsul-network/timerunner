@@ -85,14 +85,15 @@ func main() {
 
 	http.HandleFunc("/add", func(w http.ResponseWriter, r *http.Request) {
 		runInfo, err := AddExecutable(r.Body)
-		scheduler.scheduleRun(*runInfo)
 		if err != nil {
 			log.Println(err)
 		}
+		scheduler.scheduleRun(*runInfo)
+
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	http.ListenAndServe(":3000", nil)
+	http.ListenAndServe(":3004", nil)
 
 	//executable, _ := os.ReadFile("demo.zip")
 	//exeReader := bytes.NewReader(executable)

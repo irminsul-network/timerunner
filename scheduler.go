@@ -64,15 +64,14 @@ func (s *Scheduler) scheduleRun(run RunInfo) {
 	}
 
 	s.Timers[run.PackageName] = time.AfterFunc(nextRunIn, func() {
-		log.Println("running :", run.PackageName)
 		binName := "./" + run.ExecPath
 		cmd := exec.Command(binName)
 		cmd.Dir = path.Join(executablesPath, run.PackageName)
+		log.Println("running package:", run.PackageName, " working dir: ", cmd.Dir, " bin invocation: ", binName)
 		output, err := cmd.Output()
 		if err != nil {
 			log.Printf("failed to run: %s", err)
 		}
-
 		log.Printf("output: %s", output)
 
 		s.Timers[run.PackageName].Reset(run.GetPeriod())
